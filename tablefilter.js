@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+(() => {
   function parseFilterExpression(expr) {
     let negate = false;
     let term = expr;
@@ -76,30 +76,40 @@
     return childElement;
   }
 
-  // add a row with an input box for each column
   function decorateTable(table) {
+    //get all rows of this table
     let rows = table.getElementsByTagName("tr");
+    //get the first row
     let firstRow = rows[0];
+    //get the first rows <td> elements
     let firstCells = firstRow.children;
-
+    // create an a new table row <tr> element, this will be our new input element for filter values
     let filterRow = document.createElement("tr");
+    // for each cell of the first row, do the following.
     for (let i = 0; i < firstCells.length; i++) {
+      // add a table data or single cell element.
       let filterCell = document.createElement("td");
+      // for each td cell, create a input
       let filterInput = document.createElement("input");
+      // give the inpu the type of "search"
       filterInput.type = "search";
+      //set the width of the input
       filterInput.style.width =
         firstCells[i].getBoundingClientRect()["width"] - 10 + "px";
+      // attach an event listener to the "input" that calls the filterTable whenever you input
       filterInput.addEventListener("input", function () {
         filterTable(table, filterRow);
       });
+      // add the above constructed <input> element to the <td> we created above
       filterCell.appendChild(filterInput);
+      // add the created <td> to the filterRow we created above.
       filterRow.appendChild(filterCell);
     }
-
+    // create a <thead> if it doesn't have one.
     let thead = getOrCreate(table, "thead");
     thead.appendChild(filterRow);
   }
-
+  //get all top level tables from a webpage, and call the decorate table function on each them
   let tables = document.getElementsByTagName("table");
   for (var table of tables) {
     decorateTable(table);
