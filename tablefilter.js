@@ -101,6 +101,7 @@
   }
 
   let tables = document.getElementsByTagName("table");
+  console.log("Adding filter to: " + tables.length + " tables.");
   for (var table of tables) {
     decorateTable(table);
   }
